@@ -1,55 +1,33 @@
-global N
-N = 4
-
-def printSolution(board):
-    for i in range(N):
-        for j in range(N):
-            print (board[i][j],end=' ')
-        print()
-
-def isSafe(board, row, col):
-    for i in range(col):
-        if board[row][i] == 1:
+def nqueen(a,loc,vis):
+    if(loc==len(a)):
+        print(a)
+        return
+    for i in range(0,n):
+        if(vis[i]==0 and checkdiag(a,loc,i)):
+            vis[i]=1
+            a[loc][i]=1
+            nqueen(a,loc+1,vis)
+            a[loc][i]=0
+            vis[i]=0
+def checkdiag(a,row,col):
+    i,j=row,col
+    while(i>-1 and j>-1):
+        if(a[i][j]==1):
             return False
-    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
-        if board[i][j] == 1:
+        i-=1
+        j-=1
+    i,j=row,col
+    while(i>-1 and j<len(a)):
+        if(a[i][j]==1):
             return False
-    for i, j in zip(range(row, N, 1), range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
+        i-=1
+        j+=1
     return True
-
-def solveNQUtil(board, col):
-    if col >= N:
-        printSolution(board)
-        return True
-    for i in range(N):
-        if isSafe(board, i, col):
-            board[i][col] = 1
-            if solveNQUtil(board, col + 1) == True:
-                return True
-            board[i][col] = 0
-    return False
-
-def solveNQ():
-    board = [ [0, 0, 0, 0],
-              [0, 0, 0, 0],
-              [0, 0, 0, 0],
-              [0, 0, 0, 0]
-             ]
- 
-    if solveNQUtil(board, 0) == False:
-        print ("Solution does not exist")
-        return False
-    return True
-solveNQ()
-
-
-
-'''Output
-0 0 1 0 
-1 0 0 0 
-0 0 0 1 
-0 1 0 0 
-True
-'''
+print("Enter no of queens : ")
+n=int(input())
+l=[]
+for i in range(0,n):
+    b=[0]*n
+    l.append(b)
+vi=[0]*n
+nqueen(l,0,vi)
